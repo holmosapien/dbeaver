@@ -11,4 +11,65 @@
   <artifactId>org.jkiss.dbeaver.ext.mysql</artifactId>
   <version>2.1.269-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
+  <dependencies>
+    <dependency>
+      <groupId>software.amazon.awssdk</groupId>
+      <artifactId>apache-client</artifactId>
+      <version>2.32.19</version>
+    </dependency>
+    <dependency>
+      <groupId>software.amazon.awssdk</groupId>
+      <artifactId>auth</artifactId>
+      <version>2.32.19</version>
+    </dependency>
+    <dependency>
+      <groupId>software.amazon.awssdk</groupId>
+      <artifactId>rds</artifactId>
+      <version>2.32.19</version>
+    </dependency>
+    <dependency>
+      <groupId>software.amazon.awssdk</groupId>
+      <artifactId>sts</artifactId>
+      <version>2.32.19</version>
+    </dependency>
+    <dependency>
+      <groupId>software.amazon.awssdk</groupId>
+      <artifactId>utils</artifactId>
+      <version>2.32.19</version>
+    </dependency>
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>3.6.1</version>
+        <executions>
+          <execution>
+            <id>copy-aws-sdk</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <!-- Put all runtime deps (including transitives) under /lib -->
+              <outputDirectory>${project.basedir}/lib</outputDirectory>
+
+              <!-- Pull deps for everything you declared at runtime scope -->
+              <includeScope>runtime</includeScope>
+
+              <!-- Keep filenames stable so your Bundle-ClassPath can be static -->
+              <stripVersion>false</stripVersion>
+
+              <!-- Safety on rebuilds -->
+              <overWriteReleases>true</overWriteReleases>
+              <overWriteSnapshots>true</overWriteSnapshots>
+
+              <!-- Optional: avoid accidentally dragging in Netty/Apache clients -->
+              <excludeArtifactIds></excludeArtifactIds>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>

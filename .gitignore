@@ -42,6 +42,10 @@ buildNumber.properties
 .settings/
 *.product.launch
 
+# Auto-downloaded bundles
+jdk/*.tar.gz
+plugins/org.jkiss.dbeaver.ext.mysql/lib/*.jar
+
 # Dev executables
 
 .cmd
