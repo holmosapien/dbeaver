@@ -192,6 +192,7 @@
 
     <extension point="org.jkiss.dbeaver.ui.propertyConfigurator">
         <propertyConfigurator class="org.jkiss.dbeaver.ext.mysql.model.net.MySQLSSLHandlerImpl" uiClass="org.jkiss.dbeaver.ext.mysql.ui.views.MySQLSSLConfigurator"/>
+        <propertyConfigurator class="org.jkiss.dbeaver.ext.mysql.auth.MySQLIAMAuthModel" uiClass="org.jkiss.dbeaver.ext.mysql.ui.config.MySQLIAMAuthModelConfigurator"/>
     </extension>
 
     <extension point="org.jkiss.dbeaver.task.ui">
