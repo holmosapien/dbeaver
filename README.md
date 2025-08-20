@@ -6,7 +6,7 @@
 
 # DBeaver
 
-Free multi-platform database tool for developers, SQL programmers, database administrators and analysts.  
+Free multi-platform database tool for developers, SQL programmers, database administrators and analysts.
 
 * Has a lot of <a href="https://github.com/dbeaver/dbeaver/wiki">features</a> including schema editor, SQL editor, data editor, AI integration, ER diagrams, data export/import/migration, SQL execution plans, database administration tools, database dashboards, Spatial data viewer, proxy and SSH tunnelling, custom database drivers editor, etc.
 * Out of the box supports more than <a href="#supported-databases">100 database drivers</a>.
@@ -20,12 +20,12 @@ Free multi-platform database tool for developers, SQL programmers, database admi
 
 ## Download
 
-You can download prebuilt binaries from <a href="https://dbeaver.io/download" target="_blank">official website</a> or directly from <a href="https://github.com/dbeaver/dbeaver/releases">GitHub releases</a>.  
-You can also download <a href="https://dbeaver.io/files/ea" target="_blank">Early Access</a> version. We publish daily.  
+You can download prebuilt binaries from <a href="https://dbeaver.io/download" target="_blank">official website</a> or directly from <a href="https://github.com/dbeaver/dbeaver/releases">GitHub releases</a>.
+You can also download <a href="https://dbeaver.io/files/ea" target="_blank">Early Access</a> version. We publish daily.
 
 ## Running
 
-Just run an installer and then click on app icon. Or unzip an archive and run `dbeaver` from command line.  
+Just run an installer (or unzip an archive) and run `dbeaver`.
 
 Note: DBeaver needs Java to run. <a href="https://adoptium.net/temurin/releases/?package=jre" target="_blank">OpenJDK 21</a> is included in all DBeaver distributions.
 You can change default JDK version by replacing directory `jre` in dbeaver installation folder.
@@ -36,6 +36,68 @@ You can change default JDK version by replacing directory `jre` in dbeaver insta
 * [WIKI](https://github.com/dbeaver/dbeaver/wiki)
 * [Issue tracker](https://github.com/dbeaver/dbeaver/issues)
 * [Building from sources](https://github.com/dbeaver/dbeaver/wiki/Build-from-sources)
+
+## Building from Source
+
+### Dependencies
+
+* openjdk
+* maven
+
+### Configuration
+
+Some of the entities pulled in during the build are larger than the default 100,000 byte limit. Update your `~/.mvn/maven.config` to remove the entity limits.
+
+```
+-Djdk.xml.totalEntitySizeLimit=0
+-Djdk.xml.maxGeneralEntitySizeLimit=0
+-Djdk.xml.maxParameterEntitySizeLimit=0
+```
+
+### Starting the Build
+
+```
+$ git clone git@github.com:holmosapien/dbeaver.git
+$ cd dbeaver
+$ git checkout iamAssumeRole
+$ tools/build.sh
+```
+
+After the build completes, the application will reside in `product/community/target/products/org.jkiss.dbeaver.core.product/macosx/cocoa/aarch64/`.
+
+### Post-Build JDK Installation
+
+On macOS, DBeaver expects there to be a JRE inside of the application container. A handy script has been included to place the JRE in the right path.
+
+First, download the JDK referenced in the `jdk/jdk.json` file.
+
+```
+$ cd jdk
+$ curl -LO $( jq .macos.url jdk.json )
+$ cd ..
+```
+
+Now you can use `tools/extract-jdk.json` to dump the JRE into the application container.
+
+```
+$ tools/extract-jre.sh
+```
+
+Now `DBeaver.app` is ready to run.
+
+### Configuration
+
+To use the AWS IAM support to authenticate with an RDS MySQL instance, use the following configuration
+
+* **Authentication**: AWS IAM Authentication
+* **Username**: your username
+* **Password**: blank, with "Save password" disabled
+* **AWS Region**: the AWS region for your database
+* **AWS Profile**: the AWS profile you wish to use to generate your credentials
+* **IAM Role ARN**: the role you wish to assume (optional)
+* **Source Identity**: the source identity to use when assuming the IAM role (optional)
+
+When connecting DBeaver will ask for a password. Leave it blank, hit enter, and the authentication token will be automatically generated.
 
 ## Architecture
 
@@ -53,7 +115,7 @@ You can change default JDK version by replacing directory `jre` in dbeaver insta
 
 ### Community version
 
-Out of the box DBeaver supports following database drivers: 
+Out of the box DBeaver supports following database drivers:
 MySQL, MariaDB, Oracle, DB2, PostgreSQL, SQL Server, Sybase, Apache Hive, Drill, Presto, Trino, Phoenix, Exasol, Informix, Teradata, Vertica, Netezza, Firebird, Derby, H2, H2GIS, WMI, Snowflake, Greenplum, Redshift, Athena, SAP HANA, MaxDB, NuoDB, MS Access, SQLite, CSV, DBF, Firebird, TimescaleDB, Yellowbrick, CockroachDB, OrientDB, MonetDB, Google BigQuery, Google Spanner, Apache Hive/Impala/Spark, Apache Ignite, MapD, Azure SQL, CrateDB, Elasticsearch, Ocient, Ingres, OmniSci, Yugabyte, IRIS, Data Virtuality, Denodo, Virtuoso, Machbase, DuckDB, Babelfish, OceanBase, Salesforce, EnterpriseDB, Apache Druid, Apache Kylin, Databricks, OpenSearch, TiDB, TDEngine, Materialize, JDBCX, Dameng, Altibase, StarRocks, CUBRID, GaussDB, DolphinDB, LibSQL, GBase 8s, Databend, Cloudberry, Teiid, Kingbase.
 
 ### PRO versions
@@ -81,7 +143,7 @@ That's really cool, and we are glad that you like DBeaver.
 - We are actively looking for new source code contributors. We have added labels “Good first issue” and “Help wanted” to some tickets. If you want to be a part of our development team, just be brave and take a ticket. <a href="https://dbeaver.com/help-dbeaver/">We are happy to reward</a> our most active contributors every major sprint.
 - You can buy <a href="https://dbeaver.com/buy/">one of our commercial versions</a>. They include NoSQL databases support, additional extensions, and official online support. Also, licensed users have priorities in bug fixes and the development of new features.
 
-Thank you!  
+Thank you!
 
 - <a href="https://github.com/dbeaver/dbeaver/graphs/contributors">DBeaver Team</a> (contributors)
 
