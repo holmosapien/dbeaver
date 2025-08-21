@@ -44,9 +44,24 @@ You can change default JDK version by replacing directory `jre` in dbeaver insta
 * openjdk
 * maven
 
+On macOS, these dependencies can be installed with `brew`. On Windows, download OpenJDK and Maven, unzip them into a directory of your choosing, and add the `bin` paths to your system `PATH`.
+
+* [OpenJDK](https://jdk.java.net/24/)
+* [Maven](https://maven.apache.org/download.cgi)
+
+For example, when unzipping those into a hypothetical directory "E:\JDK", you would need to add these directories to your path:
+
+```
+E:\JDK\apache-maven-3.9.11\bin
+E:\JDK\jdk-24.0.2\bin
+```
+
 ### Configuration
 
-Some of the entities pulled in during the build are larger than the default 100,000 byte limit. Update your `~/.mvn/maven.config` to remove the entity limits.
+Some of the entities pulled in during the build are larger than the default 100,000 byte limit.
+
+* **macOS**: Update your `~/.mvn/maven.config` to remove the entity limits.
+* **Windows**: Create a file named `product\aggregate\.mvn\maven.config` inside of your DBeaver git clone.
 
 ```
 -Djdk.xml.totalEntitySizeLimit=0
@@ -60,10 +75,11 @@ Some of the entities pulled in during the build are larger than the default 100,
 $ git clone git@github.com:holmosapien/dbeaver.git
 $ cd dbeaver
 $ git checkout iamAssumeRole
-$ tools/build.sh
+$ tools/build.sh # macOS
+$ tools\build.cmd # Windows
 ```
 
-After the build completes, the application will reside in `product/community/target/products/org.jkiss.dbeaver.core.product/macosx/cocoa/aarch64/`.
+After the build completes, the application will reside in `product/community/target/products/org.jkiss.dbeaver.core.product/<platform>/<platform>/<architecture>/`.
 
 ### Post-Build JDK Installation
 
@@ -121,8 +137,8 @@ MySQL, MariaDB, Oracle, DB2, PostgreSQL, SQL Server, Sybase, Apache Hive, Drill,
 ### PRO versions
 
 <a href="https://dbeaver.com/download/">Commercial versions</a> extends functionality of many popular drivers and also support non-JDBC datasources such as:
-ODBC, MongoDB, Cassandra, Couchbase, CouchDB, Redis, InfluxDB, Firestore, BigTable, DynamoDB, Kafka KSQL, Neo4j, AWS Neptune, AWS Timestream, Azure CosmosDB, Yugabyte, Salesforce, etc.  
-Also, we support flat files as databases: CSV, XLSX, Json, XML, Parquet.  
+ODBC, MongoDB, Cassandra, Couchbase, CouchDB, Redis, InfluxDB, Firestore, BigTable, DynamoDB, Kafka KSQL, Neo4j, AWS Neptune, AWS Timestream, Azure CosmosDB, Yugabyte, Salesforce, etc.
+Also, we support flat files as databases: CSV, XLSX, Json, XML, Parquet.
 You can find the list of all databases supported in commercial versions <a href="https://dbeaver.com/databases/">here</a>.
 
 ## Feedback
